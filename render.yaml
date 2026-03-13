@@ -7,16 +7,6 @@ services:
     dockerContext: .
     dockerfilePath: Dockerfile
     envVars:
-      - key: DATABASE_HOST
-        sync: false
-      - key: DATABASE_PORT
-        value: "4000"
-      - key: DATABASE_USER
-        sync: false
-      - key: DATABASE_PASSWORD
-        sync: false
-      - key: DATABASE_NAME
-        value: "test"
       - key: DATABASE_URL
         sync: false
       - key: APP_SECRET

@@ -3,21 +3,23 @@
 KIMAI=$(cat /opt/kimai/version.txt)
 echo $KIMAI
 
-function waitForDB() {
-  # Parse sql connection data
-  DATABASE_USER=$(awk -F '[/:@]' '{print $4}' <<< "$DATABASE_URL")
-  DATABASE_PASS=$(awk -F '[/:@]' '{print $5}' <<< "$DATABASE_URL")
-  DATABASE_HOST=$(awk -F '[/:@]' '{print $6}' <<< "$DATABASE_URL")
-  DATABASE_PORT=$(awk -F '[/:@]' '{print $7}' <<< "$DATABASE_URL")
-  DATABASE_BASE=$(awk -F '[/?]' '{print $4}' <<< "$DATABASE_URL")
+# Parse DATABASE_URL for split-env SSL configuration
+if [ -n "$DATABASE_URL" ]; then
+  export DATABASE_USER=$(awk -F '[/:@]' '{print $4}' <<< "$DATABASE_URL")
+  export DATABASE_PASSWORD=$(awk -F '[/:@]' '{print $5}' <<< "$DATABASE_URL")
+  export DATABASE_HOST=$(awk -F '[/:@]' '{print $6}' <<< "$DATABASE_URL")
+  export DATABASE_PORT=$(awk -F '[/:@]' '{print $7}' <<< "$DATABASE_URL")
+  export DATABASE_NAME=$(awk -F '[/?]' '{print $4}' <<< "$DATABASE_URL")
 
-  re='^[0-9]+$'
-  if ! [[ $DATABASE_PORT =~ $re ]] ; then
-     DATABASE_PORT=3306
+  if [[ ! $DATABASE_PORT =~ ^[0-9]+$ ]]; then
+     export DATABASE_PORT=3306
   fi
+  echo "Parsed Database Host: $DATABASE_HOST"
+fi
 
+function waitForDB() {
   echo "Wait for database connection ..."
-  until php /dbtest.php "$DATABASE_HOST" "$DATABASE_BASE" "$DATABASE_PORT" "$DATABASE_USER" "$DATABASE_PASS"; do
+  until php /dbtest.php "$DATABASE_HOST" "$DATABASE_NAME" "$DATABASE_PORT" "$DATABASE_USER" "$DATABASE_PASSWORD"; do
     echo Checking DB: $?
     sleep 3
   done
