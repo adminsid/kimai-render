@@ -78,8 +78,8 @@ function handleStartup() {
 function prepareKimai() {
   # These are idempotent, so we can run them on every start-up
   /opt/kimai/bin/console -n kimai:install
-  if [ ! -z "$ADMINPASS" ] && [ ! -a "$ADMINMAIL" ]; then
-    /opt/kimai/bin/console kimai:user:create admin "$ADMINMAIL" ROLE_SUPER_ADMIN "$ADMINPASS"
+  if [ -n "$ADMINPASS" ] && [ -n "$ADMINMAIL" ]; then
+    /opt/kimai/bin/console kimai:user:create "${ADMINUSER:-admin}" "$ADMINMAIL" ROLE_SUPER_ADMIN "$ADMINPASS" || true
   fi
   echo "$KIMAI" > /opt/kimai/var/installed
   echo "Kimai is ready"

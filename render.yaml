@@ -11,6 +11,13 @@ services:
         sync: false
       - key: APP_SECRET
         generateValue: true
+      - key: ADMINMAIL
+        sync: false
+      - key: ADMINPASS
+        sync: false
+      - key: ADMINUSER
+        value: admin
+        sync: false
       - key: APP_ENV
         value: prod
       - key: TRUSTED_PROXIES
