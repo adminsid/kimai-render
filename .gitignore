@@ -2,7 +2,6 @@ node_modules/
 .wrangler/
 dist/
 test_pdo.php
-dummy_dbtest.php
 kimai-commands/
 .DS_Store
 .env
