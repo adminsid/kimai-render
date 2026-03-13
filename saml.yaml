@@ -1,0 +1,45 @@
+kimai:
+    saml:
+        activate: "%env(bool:default:SAML_ACTIVATE:FALSE)%"
+        title: "%env(default:SAML_TITLE:Login with SAML)%"
+        provider: "%env(default:SAML_PROVIDER:google)%"
+        mapping:
+            - { saml: "%env(default:SAML_MAPPING_EMAIL:$Email)%", kimai: email }
+            - { saml: "%env(default:SAML_MAPPING_ALIAS:$FirstName $LastName)%", kimai: alias }
+        roles:
+            resetOnLogin: "%env(bool:default:SAML_ROLES_RESET:TRUE)%"
+            attribute: "%env(default:SAML_ROLES_ATTRIBUTE:Groups)%"
+            mapping:
+                - { saml: "%env(default:SAML_ROLES_MAPPING_ADMIN:Admin)%", kimai: ROLE_SUPER_ADMIN }
+                - { saml: "%env(default:SAML_ROLES_MAPPING_TEAMLEAD:Teamlead)%", kimai: ROLE_TEAMLEAD }
+                - { saml: "%env(default:SAML_ROLES_MAPPING_USER:User)%", kimai: ROLE_USER }
+        connection:
+            idp:
+                entityId: "%env(default:SAML_IDP_ENTITY_ID:EMPTY)%"
+                singleSignOnService:
+                    url: "%env(default:SAML_IDP_SSO_URL:EMPTY)%"
+                    binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'
+                x509cert: "%env(default:SAML_IDP_CERT:EMPTY)%"
+            sp:
+                entityId: "%env(default:SAML_SP_ENTITY_ID:EMPTY)%"
+                assertionConsumerService:
+                    url: "%env(default:SAML_SP_ACS_URL:EMPTY)%"
+                    binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'
+                singleSignOnService:
+                    url: "%env(default:SAML_SP_SSO_URL:EMPTY)%"
+                    binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'
+            strict: true
+            debug: "%env(bool:default:SAML_DEBUG:FALSE)%"
+            security:
+                nameIdEncrypted: false
+                authnRequestsSigned: false
+                logoutRequestSigned: false
+                logoutResponseSigned: false
+                wantMessagesSigned: false
+                wantAssertionsSigned: false
+                wantNameIdEncrypted: false
+                requestedAuthnContext: true
+                signMetadata: false
+                wantXMLValidation: true
+                signatureAlgorithm: 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256'
+                digestAlgorithm: 'http://www.w3.org/2001/04/xmlenc#sha256'

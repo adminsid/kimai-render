@@ -24,3 +24,18 @@ services:
         value: "10.0.0.0/8" # Render internal proxy range
       - key: MAILER_URL
         value: "null://localhost"
+      - key: SAML_ACTIVATE
+        value: "false"
+      - key: SAML_IDP_ENTITY_ID
+        sync: false
+      - key: SAML_IDP_SSO_URL
+        sync: false
+      - key: SAML_IDP_CERT
+        sync: false
+      - key: SAML_SP_ENTITY_ID
+        sync: false
+      - key: SAML_SP_ACS_URL
+        sync: false
+      - key: SAML_SP_SLO_URL
+        sync: false
+
